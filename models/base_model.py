@@ -4,42 +4,45 @@ Defines all common attributes/methods for other classes
 """
 import uuid
 from datetime import datetime
+from models import storage
 
 
 class BaseModel:
     """
     class for BaseModel
-
     """
     def __init__(self, *args, **kwargs):
 
+        self.id = str(uuid.uuid4())
+        date_now = datetime.now()
+        self.created_at = date_now
+        self.updated_at = date_now
+
         if kwargs:
-            if "id" in kwargs:
-                self.id = kwargs["id"]
-            if "created_at" in kwargs:
-                self.created_at = datetime.strptime(kwargs["created_at"],
-                                                    "%Y-%m-%dT%H:%M:%S.%f")
-            if "updated_at" in kwargs:
-                self.updated_at = datetime.strptime(kwargs["updated_at"],
-                                                    "%Y-%m-%dT%H:%M:%S.%f")
-        else:
-            self.id = str(uuid.uuid4())
-            date_now = datetime.now()
-            self.created_at = date_now
-            self.updated_at = date_now
+            for key in kwargs.keys():
+                if key == "__classname__":
+                    continue
+                elif key == "created_at":
+                    self.created_at = datetime.strptime(kwargs[key],
+                                                        "%Y-%m-%dT%H:%M:%S.%f")
+                elif key == "updated_at":
+                    self.updated_at = datetime.strptime(kwargs[key],
+                                                        "%Y-%m-%dT%H:%M:%S.%f")
+                else:
+                    setattr(self, key, kwargs.get(key))
+        storage.new(self.to_dict())
 
     def save(self):
         """
         Updates the public instance attribute updated_at with
         the current datetime
-
         """
+        storage.save()
         self.updated_at = datetime.now()
 
     def to_dict(self):
         """
         returns a dictionary containing all keys/values
-
         """
         curr_dict = self.__dict__
         curr_dict['__classname__'] = __class__.__name__
