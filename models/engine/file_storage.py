@@ -43,10 +43,13 @@ class FileStorage:
 
     def reload(self):
         if os.path.exists(self.__file_path):
-            with open(self.__file_path, "r", encoding="utf-8") as f:
-                json_str = f.read()
-            for key, val in json.loads(json_str).items():
-                if "BaseModel" in key:
-                    self.__objects[key] = base_model.BaseModel(**val)
-                if "User" in key:
-                    self.__objects[key] = user.User(**val)
+            try:
+                with open(self.__file_path, "r", encoding="utf-8") as f:
+                    json_str = f.read()
+                for key, val in json.loads(json_str).items():
+                    if "BaseModel" in key:
+                        self.__objects[key] = base_model.BaseModel(**val)
+                    if "User" in key:
+                        self.__objects[key] = user.User(**val)
+            except Exception:
+                pass

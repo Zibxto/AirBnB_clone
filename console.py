@@ -4,6 +4,7 @@ Module for console
 """
 import cmd
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 import json
 
@@ -13,14 +14,32 @@ class HBNBCommand(cmd.Cmd):
     Command interpreter
     """
     prompt = '(hbnb) '
-    MODELS = ("BaseModel", "User")
+    MODELS = {
+        "BaseModel": BaseModel,
+        "User": User
+    }
+
+    def default(self, line):
+        if '.' not in line:
+            super().default(line)
+            return
+        instance = line.split('.')
+        classname = instance[0] if len(instance) > 0 else None
+        _method = instance[1].split('(')[0] if len(instance) > 1 else None
+        if _method:
+            args = instance[1].split('(')[1][:-1]
+        if classname in self.MODELS:
+            if _method == 'all':
+                self.do_all(classname)
+        else:
+            print("** class doesn't exist **")
 
     def do_create(self, model):
         """Creates a new instance of model
         """
         if model:
             if model in self.MODELS:
-                new_model = BaseModel()
+                new_model = self.MODELS[model]()
                 new_model.save()
                 print(new_model.id)
             else:
@@ -43,9 +62,8 @@ class HBNBCommand(cmd.Cmd):
             if model in self.MODELS:
                 if id:
                     for obj_val in storage.all().values():
-                        if id == obj_val['id']:
-                            curr_model = BaseModel(**obj_val)
-                            print(curr_model)
+                        if id == obj_val.id:
+                            print(obj_val)
                             return
                     print("** no instance found **")
                 else:
@@ -70,7 +88,7 @@ class HBNBCommand(cmd.Cmd):
             if model in self.MODELS:
                 if id:
                     for obj_key, obj_val in storage.all().items():
-                        if id == obj_val['id']:
+                        if id == obj_val.id:
                             del storage.all()[obj_key]
                             storage.save()
                             return
@@ -99,7 +117,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             for obj_val in storage.all().values():
                 models_list.append(obj_val.__str__())
-            print(models_list)          
+            print(models_list)
 
     def do_update(self, line):
         """Updates an instance based on the class name and
@@ -117,14 +135,12 @@ class HBNBCommand(cmd.Cmd):
         if model:
             if model in self.MODELS:
                 if id:
-                    for obj_key, obj_val in storage.all().items():
-                        if id == obj_val['id']:
+                    for obj_val in storage.all().values():
+                        if id == obj_val.id:
                             if attr_name:
                                 if attr_val:
-                                    obj = storage.all()[obj_key]
-                                    obj[attr_name] = attr_val
-                                    curr_model = BaseModel(**obj_val)
-                                    curr_model.save()
+                                    setattr(obj_val, attr_name, attr_val)
+                                    obj_val.save()
                                     return
                                 else:
                                     print("** value missing **")
@@ -154,7 +170,8 @@ class HBNBCommand(cmd.Cmd):
         """Quit command to exit the program
         """
         return True
-    
+
+
 def split_line(line_string):
     output = []
     has_quote = False
