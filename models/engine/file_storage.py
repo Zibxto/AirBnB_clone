@@ -4,6 +4,7 @@ A module for filestorage
 """
 import json
 import os
+from models import base_model, user
 
 
 class FileStorage:
@@ -26,15 +27,17 @@ class FileStorage:
         """
         Sets obj with key in objects
         """
-        key = "{}.{}".format(obj["__classname__"], obj["id"])
+        key = "{}.{}".format(obj.to_dict()["__class__"], obj.id)
         self.__objects[key] = obj
 
     def save(self):
         """
         serializes objects to the JSON file
         """
-        json_str = json.dumps(self.__objects)
-
+        obj = {}
+        for key, val in self.__objects.items():
+            obj[key] = val.to_dict()
+        json_str = json.dumps(obj)
         with open(self.__file_path, "w", encoding="utf-8") as f:
             f.write(json_str)
 
@@ -42,4 +45,8 @@ class FileStorage:
         if os.path.exists(self.__file_path):
             with open(self.__file_path, "r", encoding="utf-8") as f:
                 json_str = f.read()
-            self.__objects = json.loads(json_str)
+            for key, val in json.loads(json_str).items():
+                if "BaseModel" in key:
+                    self.__objects[key] = base_model.BaseModel(**val)
+                if "User" in key:
+                    self.__objects[key] = user.User(**val)
