@@ -4,7 +4,7 @@ A module for filestorage
 """
 import json
 import os
-from models import base_model, user
+from models import base_model, user, state, review, place, city, amenity
 
 
 class FileStorage:
@@ -42,6 +42,9 @@ class FileStorage:
             f.write(json_str)
 
     def reload(self):
+        """
+        deserializes the JSON file
+        """
         if os.path.exists(self.__file_path):
             try:
                 with open(self.__file_path, "r", encoding="utf-8") as f:
@@ -51,5 +54,15 @@ class FileStorage:
                         self.__objects[key] = base_model.BaseModel(**val)
                     if "User" in key:
                         self.__objects[key] = user.User(**val)
+                    if "State" in key:
+                        self.__objects[key] = state.State(**val)
+                    if "City" in key:
+                        self.__objects[key] = city.City(**val)
+                    if "Amenity" in key:
+                        self.__objects[key] = amenity.Amenity(**val)
+                    if "Place" in key:
+                        self.__objects[key] = place.Place(**val)
+                    if "Review" in key:
+                        self.__objects[key] = review.Review(**val)
             except Exception:
                 pass
