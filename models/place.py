@@ -20,8 +20,5 @@ class Place(BaseModel):
     longitude = 0.0
     amenity_ids = []
 
-    def __init__(self, city, user, amenities, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.city_id = city
-        self.user_id = user
-        self.amenity_ids = amenities
