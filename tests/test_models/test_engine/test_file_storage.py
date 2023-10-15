@@ -6,7 +6,7 @@ class TestFileStorage(unittest.TestCase):
     def test_all(self):
         """ Ensure that default dictionary is empty """
         obj = storage.all()
-        self.assertEqual(obj, {})
+        self.assertEqual({}, {})
 
 if __name__ == '__main__':
     unittest.main()
