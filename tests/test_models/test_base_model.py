@@ -1,8 +1,22 @@
 import unittest
 from models.base_model import BaseModel
+from models.engine.file_storage import FileStorage
+
 
 class TestBaseModel(unittest.TestCase):
     """Test cases for this model""" 
+    def setUp(self):
+        """
+        Initialize class instance
+        """
+        self.file_storage = FileStorage()
+
+    def tearDown(self):
+        """
+        Remove class instance
+        """
+        FileStorage._FileStorage__objects = {}
+
     def test_id_uniqueness(self):
         """
         Test that 'id' values are unique.
