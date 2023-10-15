@@ -1,4 +1,5 @@
 import unittest
+import uuid
 from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 
@@ -10,6 +11,7 @@ class TestBaseModel(unittest.TestCase):
         Initialize class instance
         """
         self.file_storage = FileStorage()
+        self.base_model = BaseModel()
 
     def tearDown(self):
         """
@@ -57,6 +59,49 @@ class TestBaseModel(unittest.TestCase):
                                        id1, inst.__dict__)
         self.assertEqual(inst.__str__(), string)
 
+    def test_init_method_with_no_arguments(self):
+        """
+        Test initialization of BaseModel without arguments
+        """
+        self.assertIsNotNone(self.base_model.id)
+        self.assertIsNotNone(self.base_model.created_at)
+        self.assertIsNotNone(self.base_model.updated_at)
+
+    def test_init_method_with_arguments(self):
+        """
+        Test initialization of BaseModel with arguments
+        """
+        test_id = str(uuid.uuid4())
+        kwargs = {
+            "id": test_id,
+            "created_at": "2023-10-15T12:00:00.000000",
+            "updated_at": "2023-10-15T12:00:00.000000",
+            "att": "value"
+        }
+        base_model = BaseModel(**kwargs)
+        self.assertEqual(base_model.id, test_id)
+
+    def test_save_method_updates_updated_at(self):
+        """
+        Test if the save method updates the updated_at attribute
+        """
+        prev_updated_at = self.base_model.updated_at
+        self.base_model.save()
+        self.assertNotEqual(prev_updated_at, self.base_model.updated_at)
+
+    def test_to_dict_method_returns_dictionary(self):
+        """
+        Test if the to_dict method returns a dictionary
+        """
+        base_model_dict = self.base_model.to_dict()
+        self.assertIsInstance(base_model_dict, dict)
+
+    def test_str_method_returns_string_representation(self):
+        """
+        Test if the __str__ method returns a string representation
+        """
+        string_representation = str(self.base_model)
+        self.assertIsInstance(string_representation, str)
 
 if __name__ == '__main__':
     unittest.main()
