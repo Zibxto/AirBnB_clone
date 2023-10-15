@@ -87,7 +87,32 @@ class TestFileStorage(unittest.TestCase):
         obj = BaseModel()
         obj.save()
         self.assertTrue(os.path.exists('file.json'))
-        
-    
+
+
+    def test_new_method_sets_object_in_objects(self):
+        """ Test setting objects in storage"""
+        class MockObject:
+            id = 1
+            def to_dict(self):
+                return {"__class__": "MockObject"}
+        mock_obj = MockObject()
+        self.file_storage.new(mock_obj)
+        key = "MockObject.1"
+        self.assertIn(key, self.file_storage.all())
+
+    def test_reload_method_deserializes_json_file(self):
+        """ Test number of objexts after reload"""
+        BaseModel().save()
+        BaseModel().save()
+        self.file_storage.reload()
+        self.assertEqual(len(self.file_storage.all()), 2)   
+
+    def test_reload_method_with_nonexistent_file(self):
+        """ Test reload method when file.json is not present"""
+        try:
+            self.file_storage.reload()
+        except FileNotFoundError:
+            self.fail("FileNotFoundError raised unexpectedly.")
+
 if __name__ == '__main__':
     unittest.main()
