@@ -55,6 +55,8 @@ class HBNBCommand(cmd.Cmd):
         classname = parts[0] if len(parts) > 0 else None
         method = parts[1] if len(parts) > 1 else None
         args = parts[2] if len(parts) > 2 else None
+        if args:
+            args = [arg.strip().strip('"') for arg in args.split(',')]
 
         if not method:
             super().default(line)
@@ -70,6 +72,11 @@ class HBNBCommand(cmd.Cmd):
                     if obj_val.to_dict()['__class__'] == classname:
                         count += 1
                 print(count)
+                return
+            elif method == 'show':
+                id = args[0]
+                line = "{} {}".format(classname, id)
+                self.do_show(line)
                 return
         super().default(line)
 
