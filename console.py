@@ -55,8 +55,11 @@ class HBNBCommand(cmd.Cmd):
         classname = parts[0] if len(parts) > 0 else None
         method = parts[1] if len(parts) > 1 else None
         args = parts[2] if len(parts) > 2 else None
-        if args:
+
+        if args and '{' not in args and '}' != args[-1]:
             args = [arg.strip().strip('"') for arg in args.split(',')]
+        else:
+            args = [arg.strip().strip('"')for arg in args.split(",", 1)]
 
         if not method:
             super().default(line)
@@ -84,11 +87,18 @@ class HBNBCommand(cmd.Cmd):
                 self.do_destroy(line)
                 return
             elif method == 'update':
-                id = args[0]
-                att_name = args[1]
-                att_val = args[2]
-                line = "{} {} {} {}".format(classname, id, att_name, att_val)
-                self.do_update(line)
+                if len(args) > 2:
+                    id = args[0]
+                    an = args[1]
+                    av = args[2]
+                    line = "{} {} {} {}".format(classname, id, an, av)
+                    self.do_update(line)
+                else:
+                    id = args[0]
+                    data = json.loads(args[1].replace("'", '"').strip())
+                    for an, av in data.items():
+                        line = "{} {} {} {}".format(classname, id, an, av)
+                        self.do_update(line)
                 return
         super().default(line)
 
