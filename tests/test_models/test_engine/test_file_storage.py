@@ -48,30 +48,30 @@ class TestFileStorage(unittest.TestCase):
         key = "{}.{}".format(user_obj.__class__.__name__, user_obj.id)
         self.assertTrue(key in all_objects)
 
-        def test_save_method(self):
-            """ Test the save method for serializing objects """
-            user_obj = User()
-            self.file_storage.new(user_obj)
-            self.file_storage.save()
+    def test_save_method(self):
+        """ Test the save method for serializing objects """
+        user_obj = User()
+        self.file_storage.new(user_obj)
+        self.file_storage.save()
 
-            # Check if the JSON file exists
-            self.assertTrue(os.path.exists
-                            (FileStorage._FileStorage__file_path))
+        # Check if the JSON file exists
+        self.assertTrue(os.path.exists
+                        (FileStorage._FileStorage__file_path))
 
-        def test_reload_method(self):
-            """ Test the reload method for deserializing objects """
-            user_obj = User()
-            self.file_storage.new(user_obj)
-            self.file_storage.save()
+    def test_reload_method(self):
+        """ Test the reload method for deserializing objects """
+        user_obj = User()
+        self.file_storage.new(user_obj)
+        self.file_storage.save()
 
-            # Create a new instance of FileStorage and reload objects
-            new_storage = FileStorage()
-            new_storage.reload()
+        # Create a new instance of FileStorage and reload objects
+        new_storage = FileStorage()
+        new_storage.reload()
 
-            # Check if the object is in the reloaded objects
-            all_objects = new_storage.all()
-            key = "{}.{}".format(user_obj.__class__.__name__, user_obj.id)
-            self.assertTrue(key in all_objects)
+        # Check if the object is in the reloaded objects
+        all_objects = new_storage.all()
+        key = "{}.{}".format(user_obj.__class__.__name__, user_obj.id)
+        self.assertTrue(key in all_objects)
 
 
 if __name__ == '__main__':
