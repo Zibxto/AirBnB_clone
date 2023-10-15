@@ -1,5 +1,6 @@
 import unittest
 import os
+import json
 from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
 from models.user import User
@@ -42,8 +43,6 @@ class TestFileStorage(unittest.TestCase):
         """ Test the new method for adding objects """
         user_obj = User()
         self.file_storage.new(user_obj)
-
-        # Check if the object is in the objects dictionary
         all_objects = self.file_storage.all()
         key = "{}.{}".format(user_obj.__class__.__name__, user_obj.id)
         self.assertTrue(key in all_objects)
@@ -53,8 +52,6 @@ class TestFileStorage(unittest.TestCase):
         user_obj = User()
         self.file_storage.new(user_obj)
         self.file_storage.save()
-
-        # Check if the JSON file exists
         self.assertTrue(os.path.exists
                         (FileStorage._FileStorage__file_path))
 
@@ -63,16 +60,34 @@ class TestFileStorage(unittest.TestCase):
         user_obj = User()
         self.file_storage.new(user_obj)
         self.file_storage.save()
-
-        # Create a new instance of FileStorage and reload objects
         new_storage = FileStorage()
         new_storage.reload()
-
-        # Check if the object is in the reloaded objects
         all_objects = new_storage.all()
         key = "{}.{}".format(user_obj.__class__.__name__, user_obj.id)
         self.assertTrue(key in all_objects)
 
+    def test_reload_without_exception(self):
+        """ Test that no exception is returned if file.json is not present """
+        try:
+            self.file_storage.reload()
+        except Exception as e:
+            self.fail(f"Unexpected exception: {e}")
 
+    def test_object_saved_to_file_json(self):
+        """ Test if object created is saved in file.json"""
+        obj = BaseModel()
+        key = "{}.{}".format(obj.__class__.__name__, obj.id)
+        obj.save()
+        with open("file.json", 'r', encoding="utf-8") as f:
+            file_obj = json.loads(f.read())
+            self.assertTrue(key in file_obj)
+
+    def test_file_json_present(self):
+        """ Test file.json is present when object instance is saved"""
+        obj = BaseModel()
+        obj.save()
+        self.assertTrue(os.path.exists('file.json'))
+        
+    
 if __name__ == '__main__':
     unittest.main()
