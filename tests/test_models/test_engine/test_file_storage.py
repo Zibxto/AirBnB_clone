@@ -88,7 +88,6 @@ class TestFileStorage(unittest.TestCase):
         obj.save()
         self.assertTrue(os.path.exists('file.json'))
 
-
     def test_new_method_sets_object_in_objects(self):
         """ Test setting objects in storage"""
         class MockObject:
@@ -113,6 +112,12 @@ class TestFileStorage(unittest.TestCase):
             self.file_storage.reload()
         except FileNotFoundError:
             self.fail("FileNotFoundError raised unexpectedly.")
+
+    def test_class_attributes(self):
+        """ Test that class attributes are correct"""
+        self.assertIsInstance(self.file_storage._FileStorage__file_path, str)
+        self.assertIsInstance(self.file_storage._FileStorage__objects, dict)
+        # self.assertIsInstance(_objs, dict)
 
 if __name__ == '__main__':
     unittest.main()
