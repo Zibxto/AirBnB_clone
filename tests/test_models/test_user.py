@@ -1,7 +1,8 @@
 import unittest
 from models.user import User
 
-class TestUserModel(unittest.TestCase):
+class TestUser(unittest.TestCase):
+    """Test cases for this model"""
     def test_default_values(self):
         """ Ensure that default attribute values are empty strings """
         user = User()

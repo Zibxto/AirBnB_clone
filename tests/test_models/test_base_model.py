@@ -2,6 +2,7 @@ import unittest
 from models.base_model import BaseModel
 
 class TestBaseModel(unittest.TestCase):
+    """Test cases for this model""" 
     def test_id_uniqueness(self):
         """
         Test that 'id' values are unique.

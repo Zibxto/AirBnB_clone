@@ -1,7 +1,8 @@
 import unittest
 from models.place import Place
 
-class TestUserModel(unittest.TestCase):
+class TestPlace(unittest.TestCase):
+    """Test cases for this model"""
     def test_default_values(self):
         """ Ensure that default attribute values are empty strings """
         place = Place()

@@ -1,7 +1,8 @@
 import unittest
 from models.city import City
 
-class TestUserModel(unittest.TestCase):
+class TestCity(unittest.TestCase):
+    """Test cases for this model"""
     def test_default_values(self):
         """ Ensure that default attribute values are empty strings """
         city = City()
