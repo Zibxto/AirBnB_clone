@@ -4,7 +4,7 @@ from models.engine.file_storage import FileStorage
 
 
 class TestReview(unittest.TestCase):
-    """Test cases for this model""" 
+    """Test cases for this model"""
     def setUp(self):
         """
         Initialize class instance
@@ -23,6 +23,7 @@ class TestReview(unittest.TestCase):
         self.assertEqual(review.place_id, "")
         self.assertEqual(review.user_id, "")
         self.assertEqual(review.text, "")
+
 
 if __name__ == '__main__':
     unittest.main()

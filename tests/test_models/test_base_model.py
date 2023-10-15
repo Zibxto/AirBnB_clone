@@ -4,7 +4,7 @@ from models.engine.file_storage import FileStorage
 
 
 class TestBaseModel(unittest.TestCase):
-    """Test cases for this model""" 
+    """Test cases for this model"""
     def setUp(self):
         """
         Initialize class instance
@@ -53,8 +53,10 @@ class TestBaseModel(unittest.TestCase):
         """
         inst = BaseModel()
         id1 = inst.id
-        string = "[{}] ({}) {}".format(inst.__class__.__name__, id1, inst.__dict__)
+        string = "[{}] ({}) {}".format(inst.__class__.__name__,
+                                       id1, inst.__dict__)
         self.assertEqual(inst.__str__(), string)
+
 
 if __name__ == '__main__':
     unittest.main()
