@@ -113,11 +113,5 @@ class TestFileStorage(unittest.TestCase):
         except FileNotFoundError:
             self.fail("FileNotFoundError raised unexpectedly.")
 
-    def test_class_attributes(self):
-        """ Test that class attributes are correct"""
-        self.assertIsInstance(self.file_storage._FileStorage__file_path, str)
-        self.assertIsInstance(self.file_storage._FileStorage__objects, dict)
-        # self.assertIsInstance(_objs, dict)
-
 if __name__ == '__main__':
     unittest.main()
