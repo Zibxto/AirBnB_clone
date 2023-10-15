@@ -83,6 +83,13 @@ class HBNBCommand(cmd.Cmd):
                 line = "{} {}".format(classname, id)
                 self.do_destroy(line)
                 return
+            elif method == 'update':
+                id = args[0]
+                att_name = args[1]
+                att_val = args[2]
+                line = "{} {} {} {}".format(classname, id, att_name, att_val)
+                self.do_update(line)
+                return
         super().default(line)
 
     def do_create(self, model):
@@ -210,6 +217,9 @@ class HBNBCommand(cmd.Cmd):
                 if not attr_val:
                     print(self.ERRORS["value_missing"])
                     return
+
+                if attr_val.isnumeric():
+                    attr_val = int(attr_val)
 
                 if id == obj_val.id:
                     setattr(obj_val, attr_name, attr_val)
