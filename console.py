@@ -78,6 +78,11 @@ class HBNBCommand(cmd.Cmd):
                 line = "{} {}".format(classname, id)
                 self.do_show(line)
                 return
+            elif method == 'destroy':
+                id = args[0]
+                line = "{} {}".format(classname, id)
+                self.do_destroy(line)
+                return
         super().default(line)
 
     def do_create(self, model):
