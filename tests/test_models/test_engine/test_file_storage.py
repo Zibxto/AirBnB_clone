@@ -113,5 +113,18 @@ class TestFileStorage(unittest.TestCase):
         except FileNotFoundError:
             self.fail("FileNotFoundError raised unexpectedly.")
 
+    def test_reload_instance_of_file_storage(self):
+        """ Test reload is an instance of file storage"""
+        self.assertTrue(hasattr(self.file_storage, "reload"))
+
+    def test_updated_at(self):
+        """ Test updated_at is updated when object is saved"""
+        obj = BaseModel()
+        old_date = obj.updated_at
+        obj.save()
+        new_date = obj.updated_at
+        self.assertTrue(new_date > old_date)
+
+
 if __name__ == '__main__':
     unittest.main()
