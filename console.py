@@ -58,7 +58,7 @@ class HBNBCommand(cmd.Cmd):
 
         if args and '{' not in args and '}' != args[-1]:
             args = [arg.strip().strip('"') for arg in args.split(',')]
-        else:
+        elif args:
             args = [arg.strip().strip('"')for arg in args.split(",", 1)]
 
         if not method:
