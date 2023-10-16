@@ -26,8 +26,8 @@ class TestConsole(unittest.TestCase):
             output = f.getvalue().strip()
         self.assertEqual(output, "")
 
-    def test_create_and_show_model(self):
-        """ Ensure that model is created"""
+    def test_commands(self):
+        """ Ensure that commands are present"""
         with patch('sys.stdout', new=StringIO()) as f:
             HBNBCommand().onecmd("create BaseModel")
             id = f.getvalue().strip()
@@ -38,6 +38,57 @@ class TestConsole(unittest.TestCase):
             output = f.getvalue().strip()
         self.assertTrue(output)
 
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("all BaseModel")
+            output = f.getvalue().strip()
+        self.assertTrue(output)
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd('update BaseModel name "sam"')
+            output = f.getvalue().strip()
+        self.assertTrue(output)
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("destroy BaseModel {}".format(id))
+            output = f.getvalue().strip()
+        self.assertEqual(output, "")
+    
+    def test_all_method(self):
+        """ Test 'all' method for all models"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("BaseModel.all()")
+            output = f.getvalue().strip()
+        self.assertEqual(output, "[]")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("User.all()")
+            output = f.getvalue().strip()
+        self.assertEqual(output, "[]")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("State.all()")
+            output = f.getvalue().strip()
+        self.assertEqual(output, "[]")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Review.all()")
+            output = f.getvalue().strip()
+        self.assertEqual(output, "[]")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("City.all()")
+            output = f.getvalue().strip()
+        self.assertEqual(output, "[]")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Place.all()")
+            output = f.getvalue().strip()
+        self.assertEqual(output, "[]")
+
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("Amenity.all()")
+            output = f.getvalue().strip()
+        self.assertEqual(output, "[]")
 
 if __name__ == '__main__':
     unittest.main()
