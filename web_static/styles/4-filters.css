@@ -30,7 +30,12 @@
     height: 100%;
     width: 25%;
     display: inline-block;
-    margin-left: 5%;
+    position: relative;
+}
+.filters div h3,
+.filters div h4 {
+    margin: 0;
+    margin-left: 15%;
 }
 
 .filters div h3 {
@@ -46,4 +51,61 @@
 
 .container .filters div:first-child {
     border-right: 1px #DDDDDD solid;
+}
+
+.popover {
+    position: absolute; 
+    background-color: #FAFAFA;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px #DDDDDD solid;
+    border-radius: 4px;
+    top: 100%;
+    display: none;
+}
+  
+.locations .popover {
+    left: 0;
+}
+
+.locations .popover li ul {
+    margin-left: 10px;
+}
+
+.amenities .popover {
+    left: -4px;
+}
+
+.popover {
+    list-style: none;
+    padding: 30px 0;
+}
+
+.popover li {
+    margin-left: 8%;
+    list-style: none;
+}
+.filters div:hover .popover {
+    display: block;
+}
+
+.popover li h2 {
+    margin: 0;
+    font-size: 14px;
+}
+.popover li ul {
+    padding: 0;
+    margin-bottom: 20px;
+}
+.popover li:last-child  ul{
+    margin-bottom: 0;
+}
+.popover li ul li {
+    margin-bottom: 2px;
+}
+
+.filters div ul.popover:first-child {
+    left: 0;
 }
