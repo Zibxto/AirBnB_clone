@@ -25,3 +25,25 @@
 .filters button:hover {
     opacity: 90%;
 }
+
+.filters div {
+    height: 100%;
+    width: 25%;
+    display: inline-block;
+    margin-left: 5%;
+}
+
+.filters div h3 {
+    font-weight: 600;
+    margin-top: 7%;
+    vertical-align: middle;
+}
+
+.filters div h4 {
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.container .filters div:first-child {
+    border-right: 1px #DDDDDD solid;
+}

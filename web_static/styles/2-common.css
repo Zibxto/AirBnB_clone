@@ -10,3 +10,11 @@ body {
     max-width: 1000px;
     margin: 30px auto;
 }
+
+h3 {
+    margin: 0;
+}
+
+h4 {
+    margin: 0;
+}
