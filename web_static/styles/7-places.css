@@ -9,17 +9,21 @@
 
 .places div {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-around
 }
 
 .places div article {
     width: 390px;
+    padding: 15px;
+    padding-bottom: 25px;
     margin: 10px;
     border: solid 1px #FF5A5F;
     border-radius: 4px;
 }
 
 .places div article h2 {
-    font-size: 30px;
+    font-size: 20px;
     text-align: center;
+    vertical-align: top;
+    margin-top: -5px;
 }
